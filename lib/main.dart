@@ -1,4 +1,5 @@
 import 'package:debts/add_client.dart';
+import 'package:debts/add_invoice.dart';
 import 'package:debts/clients.dart';
 import 'package:debts/helpers/database.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         "clients": (BuildContext context) => Clients(),
         "add_client": (BuildContext context) => AddClient(),
+        "add_invoice": (BuildContext context) => AddInvoice(),
       },
     );
   }
@@ -31,9 +33,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   DatabaseHelper helper = DatabaseHelper();
 
+  List<InvoiceResponse> invoices = List();
+
   @override
   void initState() {
-    helper.db;
+    _initState();
     super.initState();
   }
 
@@ -43,14 +47,11 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Container(
-        padding: EdgeInsets.all(28),
-        child: Text(
-          'You have pushed the button this many times:',
-        ),
-      ),
+      body: _invoicesList(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => print("Add Invoice"),
+        onPressed: () => Navigator.pushNamed(context, "add_invoice").then(
+          (v) => _initState(),
+        ),
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ),
@@ -74,7 +75,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 title: Text("Clients"),
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, "clients");
+                  Navigator.pushNamed(context, "clients").then(
+                    (v) => _initState(),
+                  );
                 },
               ),
             ],
@@ -82,5 +85,50 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
     );
+  }
+
+  Widget _invoicesList() {
+    if (invoices.length > 0) {
+      return ListView.builder(
+        itemCount: invoices.length,
+        itemBuilder: (context, index) {
+          return _invoiceCard(context, index);
+        },
+        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+      );
+    }
+    return Center(
+      child: Text(
+        "No invoices",
+        style: Theme.of(context).textTheme.title,
+      ),
+    );
+  }
+
+  Widget _invoiceCard(BuildContext context, int index) {
+    InvoiceResponse invoice = invoices[index];
+    return Card(
+      child: ListTile(
+        title: Text(
+          invoice.amount.toString(),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        subtitle: Text(invoice.name),
+        trailing: Icon(
+          invoice.amount > 0 ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+          color: invoice.amount > 0 ? Colors.green : Colors.red,
+          size: 35,
+        ),
+      ),
+    );
+  }
+
+  void _initState() async {
+    List<InvoiceResponse> list = await helper.getAllInvoices();
+    setState(() {
+      invoices = list;
+    });
   }
 }

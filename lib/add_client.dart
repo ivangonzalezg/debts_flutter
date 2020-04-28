@@ -36,19 +36,15 @@ class _State extends State<AddClient> {
         title: Text("Add Client"),
       ),
       body: Container(
-        padding: EdgeInsets.all(28),
+        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
         child: Form(
           key: _formKey,
           child: Column(
             children: <Widget>[
               TextFormField(
                 controller: _nameController,
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter a name';
-                  }
-                  return null;
-                },
+                validator: (value) =>
+                    value.isEmpty ? 'Please enter a name' : null,
                 decoration: InputDecoration(
                   labelText: "Name",
                   icon: Icon(Icons.person),
