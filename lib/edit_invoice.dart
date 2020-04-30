@@ -3,30 +3,30 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: AddInvoiceScreen(),
-    theme: ThemeData(
-      primaryColor: Colors.white,
-    ),
+    home: EditInvoiceScreen(),
+    theme: ThemeData(primaryColor: Colors.white),
   ));
 }
 
-class AddInvoiceScreen extends StatefulWidget {
-  static const routeName = '/add_invoice';
+class InvoiceArguments {
+  final InvoiceResponse invoice;
+
+  InvoiceArguments(this.invoice);
+}
+
+class EditInvoiceScreen extends StatefulWidget {
+  static const routeName = '/edit_invoice';
 
   @override
   _State createState() => _State();
 }
 
-class _State extends State<AddInvoiceScreen> {
+class _State extends State<EditInvoiceScreen> {
   DatabaseHelper helper = DatabaseHelper();
-
-  final _formKey = GlobalKey<FormState>();
 
   final GlobalKey<ScaffoldState> _scaffold = GlobalKey<ScaffoldState>();
 
-  final _amountController = TextEditingController();
-
-  final _descriptionController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   List<Client> clients = List();
 
@@ -38,13 +38,19 @@ class _State extends State<AddInvoiceScreen> {
     super.initState();
   }
 
-  Future<Null> _addInvoice(BuildContext context) async {
+  Future<Null> updateInvoice(
+    InvoiceResponse invoiceResponse,
+    String amount,
+    String description,
+  ) async {
     try {
       Invoice invoice = new Invoice();
+      invoice.id = invoiceResponse.id;
       invoice.clientId = int.parse(selectedClient);
-      invoice.amount = int.parse(_amountController.text.toString());
-      invoice.description = _descriptionController.text.toString();
-      await helper.saveInvoice(invoice);
+      invoice.amount = int.parse(amount);
+      invoice.description = description;
+      invoice.createdAt = invoiceResponse.createdAt;
+      await helper.updateInvoice(invoice);
       Navigator.pop(context);
     } catch (error) {
       _scaffold.currentState.showSnackBar(
@@ -59,10 +65,24 @@ class _State extends State<AddInvoiceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final InvoiceArguments args = ModalRoute.of(context).settings.arguments;
+
+    final _amountController =
+        TextEditingController(text: args.invoice.amount.toString());
+
+    final _descriptionController =
+        TextEditingController(text: args.invoice.description.toString());
+
+    if (selectedClient == null) {
+      setState(() {
+        selectedClient = args.invoice.clientId.toString();
+      });
+    }
+
     return Scaffold(
       key: _scaffold,
       appBar: AppBar(
-        title: Text("Add Invoice"),
+        title: Text('My App'),
       ),
       body: Container(
         padding: EdgeInsets.all(28),
@@ -119,7 +139,11 @@ class _State extends State<AddInvoiceScreen> {
               ),
               RaisedButton.icon(
                 onPressed: () => _formKey.currentState.validate()
-                    ? _addInvoice(context)
+                    ? updateInvoice(
+                        args.invoice,
+                        _amountController.text.toString(),
+                        _descriptionController.text.toString(),
+                      )
                     : null,
                 label: Text("Save"),
                 icon: Icon(Icons.save),

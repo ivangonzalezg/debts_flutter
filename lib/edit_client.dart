@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: ClientScreen(),
+    home: EditClientScreen(),
   ));
 }
 
@@ -13,12 +13,14 @@ class ClientArguments {
   ClientArguments(this.client);
 }
 
-class ClientScreen extends StatefulWidget {
+class EditClientScreen extends StatefulWidget {
+  static const routeName = '/edit_client';
+
   @override
   _State createState() => _State();
 }
 
-class _State extends State<ClientScreen> {
+class _State extends State<EditClientScreen> {
   DatabaseHelper helper = DatabaseHelper();
 
   final _formKey = GlobalKey<FormState>();

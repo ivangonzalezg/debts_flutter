@@ -136,7 +136,7 @@ class DatabaseHelper {
   Future<List> getAllInvoices() async {
     Database database = await db;
     List listMap = await database.rawQuery(
-        "SELECT $invoicesTable.id , $clientsTable.name, $invoicesTable.amount, $invoicesTable.created_at FROM $invoicesTable INNER JOIN $clientsTable ON $invoicesTable.$clientIdColumn = $clientsTable.id");
+        "SELECT $invoicesTable.$idColumn, $clientsTable.$idColumn as clientId, $clientsTable.$nameColumn as clientName, $invoicesTable.$amountColumn, $invoicesTable.$descriptionColumn, $invoicesTable.$createdAtColumn FROM $invoicesTable INNER JOIN $clientsTable ON $invoicesTable.$clientIdColumn = $clientsTable.$idColumn");
     List<InvoiceResponse> listInvoice = List();
     for (Map m in listMap) {
       listInvoice.add(InvoiceResponse.fromMap(m));
@@ -217,22 +217,24 @@ class Invoice {
 
   @override
   String toString() {
-    return "Client (id: $id, client_id: $clientId, amount: $amount, description: $description ,created_at: $createdAt)";
+    return "Invoice (id: $id, client_id: $clientId, amount: $amount, description: $description ,created_at: $createdAt)";
   }
 }
 
 class InvoiceResponse {
   int id;
-  String name;
+  String clientName;
+  int clientId;
   int amount;
-  int description;
+  String description;
   String createdAt;
 
   InvoiceResponse();
 
   InvoiceResponse.fromMap(Map map) {
     id = map[idColumn];
-    name = map[nameColumn];
+    clientName = map["clientName"];
+    clientId = map["clientId"];
     amount = map[amountColumn];
     description = map[descriptionColumn];
     createdAt = map[createdAtColumn];
@@ -241,7 +243,8 @@ class InvoiceResponse {
   Map toMap() {
     Map<String, dynamic> map = {
       idColumn: id,
-      nameColumn: name,
+      "clientName": clientName,
+      "clientId": clientId,
       amountColumn: amount,
       descriptionColumn: description,
       createdAtColumn: createdAt,
@@ -254,6 +257,6 @@ class InvoiceResponse {
 
   @override
   String toString() {
-    return "Client (id: $id, name: $name, amount: $amount, description: $description, created_at: $createdAt)";
+    return "InvoiceResponse (id: $id, client_name: $clientName, client_id: $clientId ,amount: $amount, description: $description, created_at: $createdAt)";
   }
 }

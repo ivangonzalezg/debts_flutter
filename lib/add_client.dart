@@ -8,6 +8,8 @@ void main() {
 }
 
 class AddClientScreen extends StatefulWidget {
+  static const routeName = '/add_client';
+
   @override
   _State createState() => _State();
 }

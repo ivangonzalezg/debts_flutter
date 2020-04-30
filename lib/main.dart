@@ -2,6 +2,7 @@ import 'package:debts/add_client.dart';
 import 'package:debts/add_invoice.dart';
 import 'package:debts/edit_client.dart';
 import 'package:debts/clients.dart';
+import 'package:debts/edit_invoice.dart';
 import 'package:debts/helpers/database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -15,10 +16,14 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       home: MyHomePage(title: 'Money Manager'),
       routes: <String, WidgetBuilder>{
-        "clients": (BuildContext context) => ClientsScreen(),
-        "add_client": (BuildContext context) => AddClientScreen(),
-        "add_invoice": (BuildContext context) => AddInvoiceScreen(),
-        "client": (BuildContext context) => ClientScreen(),
+        ClientsScreen.routeName: (BuildContext context) => ClientsScreen(),
+        AddClientScreen.routeName: (BuildContext context) => AddClientScreen(),
+        AddInvoiceScreen.routeName: (BuildContext context) =>
+            AddInvoiceScreen(),
+        EditClientScreen.routeName: (BuildContext context) =>
+            EditClientScreen(),
+        EditInvoiceScreen.routeName: (BuildContext context) =>
+            EditInvoiceScreen(),
       },
     );
   }
@@ -52,7 +57,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: _invoicesList(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.pushNamed(context, "add_invoice").then(
+        onPressed: () =>
+            Navigator.pushNamed(context, AddInvoiceScreen.routeName).then(
           (v) => _initState(),
         ),
         tooltip: 'Increment',
@@ -78,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 title: Text("Clients"),
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, "clients").then(
+                  Navigator.pushNamed(context, ClientsScreen.routeName).then(
                     (v) => _initState(),
                   );
                 },
@@ -122,11 +128,18 @@ class _MyHomePageState extends State<MyHomePage> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        subtitle: Text(invoice.name),
+        subtitle: Text(invoice.clientName),
         trailing: Icon(
           invoice.amount > 0 ? Icons.arrow_drop_up : Icons.arrow_drop_down,
           color: invoice.amount > 0 ? Colors.green : Colors.red,
           size: 35,
+        ),
+        onTap: () => Navigator.pushNamed(
+          context,
+          EditInvoiceScreen.routeName,
+          arguments: InvoiceArguments(invoice),
+        ).then(
+          (v) => _initState(),
         ),
       ),
     );
