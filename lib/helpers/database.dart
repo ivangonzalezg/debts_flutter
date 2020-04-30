@@ -167,7 +167,7 @@ class Client {
 
   @override
   String toString() {
-    return "Client (id: $id, name: $name, color: $color ,created_at: $createdAt)";
+    return "Client (id: $id, name: $name, color: $color, created_at: $createdAt)";
   }
 }
 

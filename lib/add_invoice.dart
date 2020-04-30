@@ -3,17 +3,19 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: AddInvoice(),
-    theme: ThemeData(primaryColor: Colors.white),
+    home: AddInvoiceScreen(),
+    theme: ThemeData(
+      primaryColor: Colors.white,
+    ),
   ));
 }
 
-class AddInvoice extends StatefulWidget {
+class AddInvoiceScreen extends StatefulWidget {
   @override
   _State createState() => _State();
 }
 
-class _State extends State<AddInvoice> {
+class _State extends State<AddInvoiceScreen> {
   DatabaseHelper helper = DatabaseHelper();
 
   final _formKey = GlobalKey<FormState>();

@@ -1,5 +1,6 @@
 import 'package:debts/add_client.dart';
 import 'package:debts/add_invoice.dart';
+import 'package:debts/client.dart';
 import 'package:debts/clients.dart';
 import 'package:debts/helpers/database.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +14,10 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       home: MyHomePage(title: 'Money Manager'),
       routes: <String, WidgetBuilder>{
-        "clients": (BuildContext context) => Clients(),
-        "add_client": (BuildContext context) => AddClient(),
-        "add_invoice": (BuildContext context) => AddInvoice(),
+        "clients": (BuildContext context) => ClientsScreen(),
+        "add_client": (BuildContext context) => AddClientScreen(),
+        "add_invoice": (BuildContext context) => AddInvoiceScreen(),
+        "client": (BuildContext context) => ClientScreen(),
       },
     );
   }

@@ -3,40 +3,46 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: AddClientScreen(),
+    home: ClientScreen(),
   ));
 }
 
-class AddClientScreen extends StatefulWidget {
+class ClientArguments {
+  final Client client;
+
+  ClientArguments(this.client);
+}
+
+class ClientScreen extends StatefulWidget {
   @override
   _State createState() => _State();
 }
 
-class _State extends State<AddClientScreen> {
+class _State extends State<ClientScreen> {
   DatabaseHelper helper = DatabaseHelper();
 
   final _formKey = GlobalKey<FormState>();
 
-  final _nameController = TextEditingController();
+  final String name = "Hola";
 
-  final GlobalKey<ScaffoldState> _scaffold = GlobalKey<ScaffoldState>();
-
-  Future<Null> _addClient() async {
-    Client client = new Client();
-    client.name = _nameController.text.toString();
-    await helper.saveClient(client);
+  Future<Null> updateClient(Client client, String name) async {
+    client.name = name;
+    await helper.updateClient(client);
     Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
+    final ClientArguments args = ModalRoute.of(context).settings.arguments;
+
+    final _nameController = TextEditingController(text: args.client.name);
+
     return Scaffold(
-      key: _scaffold,
       appBar: AppBar(
-        title: Text("Add Client"),
+        title: Text(args.client.name),
       ),
       body: Container(
-        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+        padding: EdgeInsets.all(28),
         child: Form(
           key: _formKey,
           child: Column(
@@ -44,7 +50,7 @@ class _State extends State<AddClientScreen> {
               TextFormField(
                 controller: _nameController,
                 validator: (value) =>
-                    value.isEmpty ? 'Please enter a name' : null,
+                    value.isEmpty ? "Please enter a name" : null,
                 decoration: InputDecoration(
                   labelText: "Name",
                   icon: Icon(Icons.person),
@@ -56,10 +62,11 @@ class _State extends State<AddClientScreen> {
                 height: 20,
               ),
               RaisedButton.icon(
-                onPressed: () =>
-                    _formKey.currentState.validate() ? _addClient() : null,
-                label: Text("Add"),
-                icon: Icon(Icons.add),
+                onPressed: () => _formKey.currentState.validate()
+                    ? updateClient(args.client, _nameController.text.toString())
+                    : null,
+                label: Text("Save"),
+                icon: Icon(Icons.save),
               )
             ],
           ),

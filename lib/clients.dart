@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:debts/helpers/database.dart';
+import 'package:debts/client.dart';
 import 'package:intl/intl.dart';
 
 enum Options { YES, NO }
 
 void main() {
   runApp(MaterialApp(
-    home: Clients(),
-    theme: ThemeData(primaryColor: Colors.white),
+    home: ClientsScreen(),
   ));
 }
 
-class Clients extends StatefulWidget {
+class ClientsScreen extends StatefulWidget {
   @override
   _State createState() => _State();
 }
 
-class _State extends State<Clients> {
+class _State extends State<ClientsScreen> {
   DatabaseHelper helper = DatabaseHelper();
 
   List<Client> clients = List();
@@ -105,24 +105,33 @@ class _State extends State<Clients> {
     String valueString = client.color.split('(0x')[1].split(')')[0];
     int value = int.parse(valueString, radix: 16);
     Color clientColor = new Color(value);
-    return Card(
-      child: ListTile(
-        title: Text(
-          clients[index].name,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
+    return GestureDetector(
+      child: Card(
+        child: ListTile(
+          title: Text(
+            clients[index].name,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          subtitle: Text(_dateFormatter(client.createdAt)),
+          leading: CircleAvatar(
+            child: Text(client.name.substring(0, 1)),
+            foregroundColor: Colors.white,
+            backgroundColor: clientColor,
+          ),
+          trailing: IconButton(
+            icon: Icon(Icons.delete_forever),
+            onPressed: () => _onDelete(client.id, client.name),
           ),
         ),
-        subtitle: Text(_dateFormatter(client.createdAt)),
-        leading: CircleAvatar(
-          child: Text(client.name.substring(0, 1)),
-          foregroundColor: Colors.white,
-          backgroundColor: clientColor,
-        ),
-        trailing: IconButton(
-          icon: Icon(Icons.delete_forever),
-          onPressed: () => _onDelete(client.id, client.name),
-        ),
+      ),
+      onTap: () => Navigator.pushNamed(
+        context,
+        "client",
+        arguments: ClientArguments(client),
+      ).then(
+        (v) => _getAllClients(),
       ),
     );
   }
