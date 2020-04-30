@@ -30,6 +30,10 @@ class _State extends State<EditInvoiceScreen> {
 
   List<Client> clients = List();
 
+  TextEditingController _amountController;
+
+  TextEditingController _descriptionController;
+
   String selectedClient;
 
   @override
@@ -67,15 +71,15 @@ class _State extends State<EditInvoiceScreen> {
   Widget build(BuildContext context) {
     final InvoiceArguments args = ModalRoute.of(context).settings.arguments;
 
-    final _amountController =
-        TextEditingController(text: args.invoice.amount.toString());
-
-    final _descriptionController =
-        TextEditingController(text: args.invoice.description.toString());
-
-    if (selectedClient == null) {
+    if (selectedClient == null &&
+        _descriptionController == null &&
+        _amountController == null) {
       setState(() {
         selectedClient = args.invoice.clientId.toString();
+        _descriptionController =
+            TextEditingController(text: args.invoice.description.toString());
+        _amountController =
+            TextEditingController(text: args.invoice.amount.toString());
       });
     }
 
