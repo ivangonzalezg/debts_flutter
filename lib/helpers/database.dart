@@ -9,6 +9,7 @@ final String nameColumn = "name";
 final String colorColumn = "color";
 final String clientIdColumn = "client_id";
 final String amountColumn = "amount";
+final String descriptionColumn = "description";
 final String createdAtColumn = "created_at";
 
 class DatabaseHelper {
@@ -29,6 +30,13 @@ class DatabaseHelper {
     }
   }
 
+  Future<Null> createTables(Database db) async {
+    await db.execute(
+        "CREATE TABLE $clientsTable($idColumn INTEGER PRIMARY KEY AUTOINCREMENT, $nameColumn TEXT, $colorColumn TEXT, $createdAtColumn TIMESTAMP DEFAULT CURRENT_TIMESTAMP)");
+    await db.execute(
+        "CREATE TABLE $invoicesTable($idColumn INTEGER PRIMARY KEY AUTOINCREMENT, $clientIdColumn INTEGER, $amountColumn INTEGER, $descriptionColumn TEXT, $createdAtColumn TIMESTAMP DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY($clientIdColumn) REFERENCES $clientsTable($idColumn))");
+  }
+
   Future<Database> initDb() async {
     final databasesPath = await getDatabasesPath();
     final path = join(databasesPath, "money_manager.db");
@@ -40,7 +48,12 @@ class DatabaseHelper {
         await db.execute(
             "CREATE TABLE $clientsTable($idColumn INTEGER PRIMARY KEY AUTOINCREMENT, $nameColumn TEXT, $colorColumn TEXT, $createdAtColumn TIMESTAMP DEFAULT CURRENT_TIMESTAMP)");
         await db.execute(
-            "CREATE TABLE $invoicesTable($idColumn INTEGER PRIMARY KEY AUTOINCREMENT, $clientIdColumn INTEGER, $amountColumn INTEGER, $createdAtColumn TIMESTAMP DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY($clientIdColumn) REFERENCES $clientsTable($idColumn))");
+            "CREATE TABLE $invoicesTable($idColumn INTEGER PRIMARY KEY AUTOINCREMENT, $clientIdColumn INTEGER, $amountColumn INTEGER, $descriptionColumn TEXT, $createdAtColumn TIMESTAMP DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY($clientIdColumn) REFERENCES $clientsTable($idColumn))");
+      },
+      onUpgrade: (Database db, int version, int newVersion) async {
+        await db.execute("DROP TABLE IF EXISTS $clientsTable");
+        await db.execute("DROP TABLE IF EXISTS $invoicesTable");
+        await createTables(db);
       },
     );
   }
@@ -175,6 +188,7 @@ class Invoice {
   int id;
   int clientId;
   int amount;
+  String description;
   String createdAt;
 
   Invoice();
@@ -183,6 +197,7 @@ class Invoice {
     id = map[idColumn];
     clientId = map[clientIdColumn];
     amount = map[amountColumn];
+    description = map[descriptionColumn];
     createdAt = map[createdAtColumn];
   }
 
@@ -191,6 +206,7 @@ class Invoice {
       idColumn: id,
       clientIdColumn: clientId,
       amountColumn: amount,
+      descriptionColumn: description,
       createdAtColumn: createdAt,
     };
     if (id != null) {
@@ -201,7 +217,7 @@ class Invoice {
 
   @override
   String toString() {
-    return "Client (id: $id, client_id: $clientId, amount: $amount ,created_at: $createdAt)";
+    return "Client (id: $id, client_id: $clientId, amount: $amount, description: $description ,created_at: $createdAt)";
   }
 }
 
@@ -209,6 +225,7 @@ class InvoiceResponse {
   int id;
   String name;
   int amount;
+  int description;
   String createdAt;
 
   InvoiceResponse();
@@ -217,6 +234,7 @@ class InvoiceResponse {
     id = map[idColumn];
     name = map[nameColumn];
     amount = map[amountColumn];
+    description = map[descriptionColumn];
     createdAt = map[createdAtColumn];
   }
 
@@ -225,6 +243,7 @@ class InvoiceResponse {
       idColumn: id,
       nameColumn: name,
       amountColumn: amount,
+      descriptionColumn: description,
       createdAtColumn: createdAt,
     };
     if (id != null) {
@@ -235,6 +254,6 @@ class InvoiceResponse {
 
   @override
   String toString() {
-    return "Client (id: $id, name: $name, amount: $amount ,created_at: $createdAt)";
+    return "Client (id: $id, name: $name, amount: $amount, description: $description, created_at: $createdAt)";
   }
 }

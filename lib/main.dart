@@ -1,9 +1,10 @@
 import 'package:debts/add_client.dart';
 import 'package:debts/add_invoice.dart';
-import 'package:debts/client.dart';
+import 'package:debts/edit_client.dart';
 import 'package:debts/clients.dart';
 import 'package:debts/helpers/database.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 void main() => runApp(MyApp());
 
@@ -109,10 +110,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _invoiceCard(BuildContext context, int index) {
     InvoiceResponse invoice = invoices[index];
+    final formatCurrency = new NumberFormat.simpleCurrency(
+      decimalDigits: 0,
+      name: "COP",
+    );
     return Card(
       child: ListTile(
         title: Text(
-          invoice.amount.toString(),
+          formatCurrency.format(invoice.amount),
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),

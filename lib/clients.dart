@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:debts/helpers/database.dart';
-import 'package:debts/client.dart';
+import 'package:debts/edit_client.dart';
 import 'package:intl/intl.dart';
 
 enum Options { YES, NO }

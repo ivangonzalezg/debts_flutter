@@ -24,6 +24,8 @@ class _State extends State<AddInvoiceScreen> {
 
   final _amountController = TextEditingController();
 
+  final _descriptionController = TextEditingController();
+
   List<Client> clients = List();
 
   String selectedClient;
@@ -37,8 +39,9 @@ class _State extends State<AddInvoiceScreen> {
   Future<Null> _addInvoice(BuildContext context) async {
     try {
       Invoice invoice = new Invoice();
-      invoice.amount = int.parse(_amountController.text.toString());
       invoice.clientId = int.parse(selectedClient);
+      invoice.amount = int.parse(_amountController.text.toString());
+      invoice.description = _descriptionController.text.toString();
       await helper.saveInvoice(invoice);
       Navigator.pop(context);
     } catch (error) {
@@ -96,6 +99,18 @@ class _State extends State<AddInvoiceScreen> {
                   labelText: "Amount",
                 ),
                 keyboardType: TextInputType.number,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              TextFormField(
+                controller: _descriptionController,
+                maxLines: 5,
+                decoration: InputDecoration(
+                  labelText: "Description (Opcional)",
+                  alignLabelWithHint: true,
+                ),
+                keyboardType: TextInputType.multiline,
               ),
               SizedBox(
                 height: 20,
