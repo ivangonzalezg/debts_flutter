@@ -121,17 +121,28 @@ class _State extends State<ClientsScreen> {
           foregroundColor: Colors.white,
           backgroundColor: clientColor,
         ),
-        trailing: IconButton(
-          icon: Icon(Icons.delete_forever),
-          onPressed: () => _onDelete(client.id, client.name),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () => Navigator.pushNamed(
+                context,
+                EditClientScreen.routeName,
+                arguments: ClientArguments(client),
+              ).then(
+                (v) => _getAllClients(),
+              ),
+              color: Colors.blue,
+            ),
+            IconButton(
+              icon: Icon(Icons.delete_forever),
+              onPressed: () => _onDelete(client.id, client.name),
+              color: Colors.red,
+            ),
+          ],
         ),
-        onTap: () => Navigator.pushNamed(
-          context,
-          EditClientScreen.routeName,
-          arguments: ClientArguments(client),
-        ).then(
-          (v) => _getAllClients(),
-        ),
+        onTap: () => print("ping!"),
       ),
     );
   }

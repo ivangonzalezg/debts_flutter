@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Money Manager',
       home: MyHomePage(title: 'Money Manager'),
       routes: <String, WidgetBuilder>{
         ClientsScreen.routeName: (BuildContext context) => ClientsScreen(),
