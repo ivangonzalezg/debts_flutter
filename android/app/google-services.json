@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "279379250316",
+    "firebase_url": "https://debts-285d1.firebaseio.com",
+    "project_id": "debts-285d1",
+    "storage_bucket": "debts-285d1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:279379250316:android:c5e0061d3ee39d2042ffa9",
+        "android_client_info": {
+          "package_name": "com.debts.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "279379250316-vv7i24407eaa8pgl6qmjgtmrfc1od4tk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD33WB2zDX3rxrP_gMIPWnDJ3cqmwKfHkg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "279379250316-vv7i24407eaa8pgl6qmjgtmrfc1od4tk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
