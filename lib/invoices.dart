@@ -81,12 +81,52 @@ class _State extends State<InvoicesScreen> {
 
   Widget _invoicesList() {
     if (invoices.length > 0) {
-      return ListView.builder(
-        itemCount: invoices.length,
-        itemBuilder: (context, index) {
-          return _invoiceCard(context, index);
-        },
+      final formatCurrency = new NumberFormat.simpleCurrency(
+        decimalDigits: 0,
+        name: "COP",
+      );
+      int total = invoices.fold(0, (t, i) => t + i.amount);
+      return Container(
         padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+        child: Column(
+          children: <Widget>[
+            Card(
+              child: ListTile(
+                title: Text(
+                  "Total",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+                subtitle: Text(formatCurrency.format(total)),
+                trailing: Icon(
+                  total > 0 ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+                  color: total > 0 ? Colors.green : Colors.red,
+                  size: 35,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              "Summary",
+              style: Theme.of(context).textTheme.title,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            new Expanded(
+              child: ListView.builder(
+                itemCount: invoices.length,
+                itemBuilder: (context, index) {
+                  return _invoiceCard(context, index);
+                },
+              ),
+            ),
+          ],
+        ),
       );
     }
     return Center(
