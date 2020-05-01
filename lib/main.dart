@@ -1,5 +1,6 @@
 import 'package:debts/add_client.dart';
 import 'package:debts/add_invoice.dart';
+import 'package:debts/client_details.dart';
 import 'package:debts/edit_client.dart';
 import 'package:debts/clients.dart';
 import 'package:debts/edit_invoice.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
             EditClientScreen(),
         EditInvoiceScreen.routeName: (BuildContext context) =>
             EditInvoiceScreen(),
+        ClientDetails.routeName: (BuildContext context) => ClientDetails(),
       },
     );
   }

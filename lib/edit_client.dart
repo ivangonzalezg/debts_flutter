@@ -25,7 +25,22 @@ class _State extends State<EditClientScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  final String name = "Hola";
+  Client client;
+
+  TextEditingController _nameController;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final ClientArguments args = ModalRoute.of(context).settings.arguments;
+    client = args.client;
+    _nameController = TextEditingController(text: args.client.name);
+  }
 
   Future<Null> updateClient(Client client, String name) async {
     client.name = name;
@@ -35,13 +50,9 @@ class _State extends State<EditClientScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ClientArguments args = ModalRoute.of(context).settings.arguments;
-
-    final _nameController = TextEditingController(text: args.client.name);
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(args.client.name),
+        title: Text(client.name),
       ),
       body: Container(
         padding: EdgeInsets.all(28),
@@ -65,7 +76,7 @@ class _State extends State<EditClientScreen> {
               ),
               RaisedButton.icon(
                 onPressed: () => _formKey.currentState.validate()
-                    ? updateClient(args.client, _nameController.text.toString())
+                    ? updateClient(client, _nameController.text.toString())
                     : null,
                 label: Text("Save"),
                 icon: Icon(Icons.save),

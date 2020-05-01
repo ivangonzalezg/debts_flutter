@@ -1,4 +1,5 @@
 import 'package:debts/add_client.dart';
+import 'package:debts/client_details.dart';
 import 'package:flutter/material.dart';
 import 'package:debts/helpers/database.dart';
 import 'package:debts/edit_client.dart';
@@ -142,7 +143,11 @@ class _State extends State<ClientsScreen> {
             ),
           ],
         ),
-        onTap: () => print("ping!"),
+        onTap: () => Navigator.pushNamed(
+          context,
+          ClientDetails.routeName,
+          arguments: ClientDetailsArguments(client),
+        ),
       ),
     );
   }

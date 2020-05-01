@@ -30,6 +30,8 @@ class _State extends State<EditInvoiceScreen> {
 
   List<Client> clients = List();
 
+  InvoiceResponse invoice;
+
   TextEditingController _amountController;
 
   TextEditingController _descriptionController;
@@ -40,6 +42,18 @@ class _State extends State<EditInvoiceScreen> {
   void initState() {
     _initState();
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final InvoiceArguments args = ModalRoute.of(context).settings.arguments;
+    invoice = args.invoice;
+    selectedClient = args.invoice.clientId.toString();
+    _descriptionController =
+        TextEditingController(text: args.invoice.description.toString());
+    _amountController =
+        TextEditingController(text: args.invoice.amount.toString());
   }
 
   Future<Null> updateInvoice(
@@ -69,20 +83,6 @@ class _State extends State<EditInvoiceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final InvoiceArguments args = ModalRoute.of(context).settings.arguments;
-
-    if (selectedClient == null &&
-        _descriptionController == null &&
-        _amountController == null) {
-      setState(() {
-        selectedClient = args.invoice.clientId.toString();
-        _descriptionController =
-            TextEditingController(text: args.invoice.description.toString());
-        _amountController =
-            TextEditingController(text: args.invoice.amount.toString());
-      });
-    }
-
     return Scaffold(
       key: _scaffold,
       appBar: AppBar(
@@ -144,7 +144,7 @@ class _State extends State<EditInvoiceScreen> {
               RaisedButton.icon(
                 onPressed: () => _formKey.currentState.validate()
                     ? updateInvoice(
-                        args.invoice,
+                        invoice,
                         _amountController.text.toString(),
                         _descriptionController.text.toString(),
                       )

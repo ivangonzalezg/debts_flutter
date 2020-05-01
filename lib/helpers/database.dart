@@ -75,10 +75,12 @@ class DatabaseHelper {
 
   Future<Client> getClient(int id) async {
     Database database = await db;
-    List<Map> maps = await database.query(clientsTable,
-        columns: [idColumn, nameColumn, colorColumn, createdAtColumn],
-        where: "$idColumn = ?",
-        whereArgs: [id]);
+    List<Map> maps = await database.query(
+      clientsTable,
+      columns: [idColumn, nameColumn, colorColumn, createdAtColumn],
+      where: "$idColumn = ?",
+      whereArgs: [id],
+    );
     if (maps.length > 0) {
       return Client.fromMap(maps.first);
     } else {
@@ -88,10 +90,12 @@ class DatabaseHelper {
 
   Future<Invoice> getInvoice(int id) async {
     Database database = await db;
-    List<Map> maps = await database.query(clientsTable,
-        columns: [idColumn, clientIdColumn, amountColumn, createdAtColumn],
-        where: "$idColumn = ?",
-        whereArgs: [id]);
+    List<Map> maps = await database.query(
+      clientsTable,
+      columns: [idColumn, clientIdColumn, amountColumn, createdAtColumn],
+      where: "$idColumn = ?",
+      whereArgs: [id],
+    );
     if (maps.length > 0) {
       return Invoice.fromMap(maps.first);
     } else {
@@ -99,28 +103,53 @@ class DatabaseHelper {
     }
   }
 
+  Future<List> getInvoicesByClient(int clientId) async {
+    Database database = await db;
+    List listMap = await database.rawQuery(
+        "SELECT * FROM $invoicesTable WHERE $clientIdColumn = $clientId");
+    List<Invoice> listInvoices = List();
+    for (Map m in listMap) {
+      listInvoices.add(Invoice.fromMap(m));
+    }
+    return listInvoices;
+  }
+
   Future<int> deleteClient(int id) async {
     Database database = await db;
-    return await database
-        .delete(clientsTable, where: "$idColumn = ?", whereArgs: [id]);
+    return await database.delete(
+      clientsTable,
+      where: "$idColumn = ?",
+      whereArgs: [id],
+    );
   }
 
   Future<int> deleteInvoice(int id) async {
     Database database = await db;
-    return await database
-        .delete(invoicesTable, where: "$idColumn = ?", whereArgs: [id]);
+    return await database.delete(
+      invoicesTable,
+      where: "$idColumn = ?",
+      whereArgs: [id],
+    );
   }
 
   Future<int> updateClient(Client client) async {
     Database database = await db;
-    return await database.update(clientsTable, client.toMap(),
-        where: "$idColumn = ?", whereArgs: [client.id]);
+    return await database.update(
+      clientsTable,
+      client.toMap(),
+      where: "$idColumn = ?",
+      whereArgs: [client.id],
+    );
   }
 
   Future<int> updateInvoice(Invoice invoice) async {
     Database database = await db;
-    return await database.update(invoicesTable, invoice.toMap(),
-        where: "$idColumn = ?", whereArgs: [invoice.id]);
+    return await database.update(
+      invoicesTable,
+      invoice.toMap(),
+      where: "$idColumn = ?",
+      whereArgs: [invoice.id],
+    );
   }
 
   Future<List> getAllClients() async {
