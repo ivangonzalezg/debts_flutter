@@ -35,6 +35,9 @@ end
 target 'Runner' do
   use_frameworks!
   use_modular_headers!
+
+  # add the Firebase pod for Google Analytics
+  pod 'Firebase/Analytics'
   
   # Flutter Pod
 

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>279379250316-gmv6hk3ufkre6su4utqidjoll8a11khm.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.279379250316-gmv6hk3ufkre6su4utqidjoll8a11khm</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAoqEklvvkrB-nL6B_PiZ4sGCo7v-LCh9U</string>
+	<key>GCM_SENDER_ID</key>
+	<string>279379250316</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.debts.ios</string>
+	<key>PROJECT_ID</key>
+	<string>debts-285d1</string>
+	<key>STORAGE_BUCKET</key>
+	<string>debts-285d1.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:279379250316:ios:3f0899073a69b37942ffa9</string>
+	<key>DATABASE_URL</key>
+	<string>https://debts-285d1.firebaseio.com</string>
+</dict>
+</plist>

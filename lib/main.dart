@@ -4,7 +4,7 @@ import 'package:debts/client_details.dart';
 import 'package:debts/edit_client.dart';
 import 'package:debts/clients.dart';
 import 'package:debts/edit_invoice.dart';
-import 'package:debts/invoices.dart';
+import 'package:debts/screens/wrapper.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Debst',
-      home: InvoicesScreen(),
+      home: Wrapper(),
       routes: <String, WidgetBuilder>{
         ClientsScreen.routeName: (BuildContext context) => ClientsScreen(),
         AddClientScreen.routeName: (BuildContext context) => AddClientScreen(),
