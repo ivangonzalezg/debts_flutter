@@ -2,19 +2,9 @@ import 'package:debts/add_invoice.dart';
 import 'package:debts/clients.dart';
 import 'package:debts/edit_invoice.dart';
 import 'package:debts/helpers/database.dart';
+import 'package:debts/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: InvoicesScreen(),
-    );
-  }
-}
 
 class InvoicesScreen extends StatefulWidget {
   @override
@@ -22,6 +12,7 @@ class InvoicesScreen extends StatefulWidget {
 }
 
 class _State extends State<InvoicesScreen> {
+  final AuthService _authService = AuthService();
   DatabaseHelper helper = DatabaseHelper();
 
   List<InvoiceResponse> invoices = List();
@@ -37,6 +28,14 @@ class _State extends State<InvoicesScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Money Manager"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.exit_to_app),
+            onPressed: () {
+              _authService.signOut();
+            },
+          ),
+        ],
       ),
       body: _invoicesList(),
       floatingActionButton: FloatingActionButton(

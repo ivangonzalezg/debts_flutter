@@ -1,12 +1,6 @@
 import 'package:debts/helpers/database.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MaterialApp(
-    home: EditClientScreen(),
-  ));
-}
-
 class ClientArguments {
   final Client client;
 

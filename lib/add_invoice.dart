@@ -1,15 +1,6 @@
 import 'package:debts/helpers/database.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MaterialApp(
-    home: AddInvoiceScreen(),
-    theme: ThemeData(
-      primaryColor: Colors.white,
-    ),
-  ));
-}
-
 class AddInvoiceScreen extends StatefulWidget {
   static const routeName = '/add_invoice';
 

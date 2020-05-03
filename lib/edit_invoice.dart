@@ -1,13 +1,6 @@
 import 'package:debts/helpers/database.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MaterialApp(
-    home: EditInvoiceScreen(),
-    theme: ThemeData(primaryColor: Colors.white),
-  ));
-}
-
 class InvoiceArguments {
   final InvoiceResponse invoice;
 

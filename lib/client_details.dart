@@ -2,13 +2,6 @@ import 'package:debts/helpers/database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-void main() {
-  runApp(MaterialApp(
-    home: ClientDetails(),
-    theme: ThemeData(primaryColor: Colors.white),
-  ));
-}
-
 class ClientDetailsArguments {
   final Client client;
 

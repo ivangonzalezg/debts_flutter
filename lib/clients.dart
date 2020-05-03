@@ -5,12 +5,6 @@ import 'package:debts/helpers/database.dart';
 import 'package:debts/edit_client.dart';
 import 'package:intl/intl.dart';
 
-void main() {
-  runApp(MaterialApp(
-    home: ClientsScreen(),
-  ));
-}
-
 class ClientsScreen extends StatefulWidget {
   static const routeName = '/clients';
 
