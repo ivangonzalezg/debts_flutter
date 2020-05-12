@@ -1,4 +1,5 @@
 import 'package:debts/services/auth.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -10,9 +11,19 @@ class SignUpScreen extends StatefulWidget {
 
 class _State extends State<SignUpScreen> {
   final AuthService _authService = AuthService();
-
+  final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  Future<Null> _onSignUp() async {
+    await _authService.signUpWithEmailAndPassword(
+      _emailController.text.toString(),
+      _passwordController.text.toString(),
+      _nameController.text.toString(),
+    );
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +34,41 @@ class _State extends State<SignUpScreen> {
       body: Container(
         padding: EdgeInsets.all(28),
         child: Form(
+          key: _formKey,
           child: Column(
             children: <Widget>[
               SizedBox(
                 height: 20,
               ),
               TextFormField(
+                controller: _nameController,
+                validator: (value) =>
+                    value.isEmpty ? 'Please enter a name' : null,
+                decoration: InputDecoration(
+                  labelText: "Name",
+                  icon: Icon(
+                    Icons.person,
+                  ),
+                ),
+                textCapitalization: TextCapitalization.words,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              TextFormField(
                 controller: _emailController,
+                validator: (value) => value.isEmpty
+                    ? 'Please enter a name'
+                    : EmailValidator.validate(value)
+                        ? null
+                        : "Please enter a valid email",
+                decoration: InputDecoration(
+                  labelText: "Email",
+                  icon: Icon(
+                    Icons.email,
+                  ),
+                ),
+                keyboardType: TextInputType.emailAddress,
               ),
               SizedBox(
                 height: 20,
@@ -37,14 +76,22 @@ class _State extends State<SignUpScreen> {
               TextFormField(
                 obscureText: true,
                 controller: _passwordController,
+                validator: (value) => value.length < 6
+                    ? 'Please enter a password 6+ chars long'
+                    : null,
+                decoration: InputDecoration(
+                  labelText: "Password",
+                  icon: Icon(
+                    Icons.lock,
+                  ),
+                ),
               ),
               SizedBox(
                 height: 20,
               ),
               RaisedButton(
-                onPressed: () {
-                  print(_emailController.text.toString());
-                },
+                onPressed: () =>
+                    _formKey.currentState.validate() ? _onSignUp() : null,
                 color: Colors.blue,
                 child: Text(
                   "Sign up",

@@ -7,14 +7,40 @@ class AuthService {
     return _auth.onAuthStateChanged;
   }
 
-  Future<FirebaseUser> signInAnon() async {
+  Future<Null> signUpWithEmailAndPassword(
+    String email,
+    String password,
+    String name,
+  ) async {
     try {
-      AuthResult result = await _auth.signInAnonymously();
+      AuthResult result = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
       FirebaseUser user = result.user;
-      return user;
+      UserUpdateInfo userUpdateInfo = UserUpdateInfo();
+      userUpdateInfo.displayName = name;
+      await user.updateProfile(userUpdateInfo);
+      await user.sendEmailVerification();
+      await signOut();
     } catch (e) {
       print(e.toString());
       return null;
+    }
+  }
+
+  Future<Null> signInWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
+    AuthResult result = await _auth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    FirebaseUser user = result.user;
+    if (!user.isEmailVerified) {
+      await signOut();
+      throw ("Email not verified");
     }
   }
 

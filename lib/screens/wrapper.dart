@@ -9,10 +9,10 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final FirebaseUser user = Provider.of<FirebaseUser>(context);
 
-    if (user == null) {
-      return SignInScreen();
-    } else {
+    if (user != null && user.isEmailVerified) {
       return InvoicesScreen();
+    } else {
+      return SignInScreen();
     }
   }
 }

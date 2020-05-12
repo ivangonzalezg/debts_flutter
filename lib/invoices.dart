@@ -3,8 +3,10 @@ import 'package:debts/clients.dart';
 import 'package:debts/edit_invoice.dart';
 import 'package:debts/helpers/database.dart';
 import 'package:debts/services/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class InvoicesScreen extends StatefulWidget {
   @override
@@ -25,6 +27,8 @@ class _State extends State<InvoicesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final FirebaseUser user = Provider.of<FirebaseUser>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Money Manager"),
@@ -52,8 +56,8 @@ class _State extends State<InvoicesScreen> {
             padding: EdgeInsets.zero,
             children: <Widget>[
               UserAccountsDrawerHeader(
-                accountName: Text("Ivan Gonzalez"),
-                accountEmail: Text("ivangonzalezgrc@gmail.com"),
+                accountName: Text(user.displayName.toString()),
+                accountEmail: Text(user.email.toString()),
                 currentAccountPicture: CircleAvatar(
                   backgroundColor: Colors.blue[800],
                   child: Text("IG"),
