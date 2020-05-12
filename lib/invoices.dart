@@ -3,9 +3,11 @@ import 'package:debts/clients.dart';
 import 'package:debts/edit_invoice.dart';
 import 'package:debts/helpers/database.dart';
 import 'package:debts/services/auth.dart';
+import 'package:debts/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 
 class InvoicesScreen extends StatefulWidget {
@@ -16,13 +18,30 @@ class InvoicesScreen extends StatefulWidget {
 class _State extends State<InvoicesScreen> {
   final AuthService _authService = AuthService();
   DatabaseHelper helper = DatabaseHelper();
+  ProgressDialog progressDialog;
 
   List<InvoiceResponse> invoices = List();
 
   @override
   void initState() {
     _initState();
+    progressDialog = ProgressDialog(context, type: ProgressDialogType.Normal);
     super.initState();
+  }
+
+  Future<Null> updateFirebase(FirebaseUser user) async {
+    await progressDialog.show();
+    List<Client> clients = await helper.getAllClients();
+    await Stream.fromIterable(clients)
+        .asyncMap(
+            (_client) => DatabaseService(uid: user.uid).saveClient(_client))
+        .toList();
+    List<Invoice> invoices = await helper.getAllInvoicesRaw();
+    await Stream.fromIterable(invoices)
+        .asyncMap(
+            (_invoice) => DatabaseService(uid: user.uid).saveInvoice(_invoice))
+        .toList();
+    await progressDialog.hide();
   }
 
   @override
@@ -74,6 +93,13 @@ class _State extends State<InvoicesScreen> {
                     (v) => _initState(),
                   );
                 },
+                leading: Icon(Icons.person),
+              ),
+              Divider(),
+              ListTile(
+                title: Text("Sync up"),
+                onTap: () => updateFirebase(user),
+                leading: Icon(Icons.refresh),
               ),
             ],
           ),

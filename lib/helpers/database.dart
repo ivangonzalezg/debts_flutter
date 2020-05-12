@@ -162,6 +162,16 @@ class DatabaseHelper {
     return listClient;
   }
 
+  Future<List> getAllInvoicesRaw() async {
+    Database database = await db;
+    List listMap = await database.rawQuery("SELECT * FROM $invoicesTable");
+    List<Invoice> listInvoice = List();
+    for (Map m in listMap) {
+      listInvoice.add(Invoice.fromMap(m));
+    }
+    return listInvoice;
+  }
+
   Future<List> getAllInvoices() async {
     Database database = await db;
     List listMap = await database.rawQuery(
