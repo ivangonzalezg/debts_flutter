@@ -1,4 +1,5 @@
 import 'package:debts/services/auth.dart';
+import 'package:debts/shared/constants.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
@@ -44,7 +45,7 @@ class _State extends State<SignUpScreen> {
                 controller: _nameController,
                 validator: (value) =>
                     value.isEmpty ? 'Please enter a name' : null,
-                decoration: InputDecoration(
+                decoration: textInputDecoration.copyWith(
                   labelText: "Name",
                   icon: Icon(
                     Icons.person,
@@ -62,7 +63,7 @@ class _State extends State<SignUpScreen> {
                     : EmailValidator.validate(value)
                         ? null
                         : "Please enter a valid email",
-                decoration: InputDecoration(
+                decoration: textInputDecoration.copyWith(
                   labelText: "Email",
                   icon: Icon(
                     Icons.email,
@@ -79,7 +80,7 @@ class _State extends State<SignUpScreen> {
                 validator: (value) => value.length < 6
                     ? 'Please enter a password 6+ chars long'
                     : null,
-                decoration: InputDecoration(
+                decoration: textInputDecoration.copyWith(
                   labelText: "Password",
                   icon: Icon(
                     Icons.lock,

@@ -1,5 +1,6 @@
 import 'package:debts/screens/auth/sign_up.dart';
 import 'package:debts/services/auth.dart';
+import 'package:debts/shared/constants.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
@@ -65,7 +66,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       : EmailValidator.validate(value)
                           ? null
                           : "Please enter a valid email",
-                  decoration: InputDecoration(
+                  decoration: textInputDecoration.copyWith(
                     labelText: "Email",
                     icon: Icon(
                       Icons.email,
@@ -82,7 +83,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   validator: (value) => value.length < 6
                       ? 'Please enter a password 6+ chars long'
                       : null,
-                  decoration: InputDecoration(
+                  decoration: textInputDecoration.copyWith(
                     labelText: "Password",
                     icon: Icon(
                       Icons.lock,
