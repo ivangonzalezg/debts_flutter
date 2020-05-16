@@ -87,7 +87,7 @@ class _State extends State<EditInvoiceScreen> {
     return Scaffold(
       key: _scaffold,
       appBar: AppBar(
-        title: Text('My App'),
+        title: Text('Edit Invoice'),
       ),
       body: Container(
         padding: EdgeInsets.all(28),
