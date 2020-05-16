@@ -151,7 +151,8 @@ class DatabaseHelper {
 
   Future<List> getAllClients() async {
     Database database = await db;
-    List listMap = await database.rawQuery("SELECT * FROM $clientsTable");
+    List listMap = await database
+        .rawQuery("SELECT * FROM $clientsTable ORDER BY $nameColumn ASC");
     List<Client> listClient = List();
     for (Map m in listMap) {
       listClient.add(Client.fromMap(m));
