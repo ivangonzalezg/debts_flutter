@@ -70,7 +70,7 @@ class _State extends State<EditClientScreen> {
                   icon: Icon(Icons.person),
                 ),
                 keyboardType: TextInputType.text,
-                textCapitalization: TextCapitalization.sentences,
+                textCapitalization: TextCapitalization.words,
               ),
               SizedBox(
                 height: 20,

@@ -162,7 +162,7 @@ class DatabaseHelper {
   Future<List> getAllInvoices() async {
     Database database = await db;
     List listMap = await database.rawQuery(
-        "SELECT $invoicesTable.*, $clientsTable.$idColumn as clientId, $clientsTable.$nameColumn as clientName FROM $invoicesTable INNER JOIN $clientsTable ON $invoicesTable.$clientIdColumn = $clientsTable.$idColumn");
+        "SELECT $invoicesTable.*, $clientsTable.$idColumn as clientId, $clientsTable.$nameColumn as clientName FROM $invoicesTable INNER JOIN $clientsTable ON $invoicesTable.$clientIdColumn = $clientsTable.$idColumn ORDER BY $idColumn DESC");
     List<InvoiceResponse> listInvoice = List();
     for (Map m in listMap) {
       listInvoice.add(InvoiceResponse.fromMap(m));
