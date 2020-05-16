@@ -112,7 +112,7 @@ class _State extends State<InvoicesScreen> {
             ),
             Text(
               "Summary",
-              style: Theme.of(context).textTheme.title,
+              style: Theme.of(context).textTheme.headline6,
             ),
             SizedBox(
               height: 20,
@@ -132,7 +132,7 @@ class _State extends State<InvoicesScreen> {
     return Center(
       child: Text(
         "No invoices",
-        style: Theme.of(context).textTheme.title,
+        style: Theme.of(context).textTheme.headline6,
       ),
     );
   }

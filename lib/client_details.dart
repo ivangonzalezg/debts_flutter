@@ -1,3 +1,4 @@
+import 'package:debts/edit_invoice.dart';
 import 'package:debts/helpers/database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -27,7 +28,7 @@ class _State extends State<ClientDetails> {
 
   Client client;
 
-  List<Invoice> invoices = List();
+  List<InvoiceResponse> invoices = List();
 
   @override
   void initState() {
@@ -44,7 +45,7 @@ class _State extends State<ClientDetails> {
   }
 
   Future<Null> getClientInvoices(int id) async {
-    List<Invoice> list = await helper.getInvoicesByClient(id);
+    List<InvoiceResponse> list = await helper.getInvoicesByClient(id);
     setState(() {
       invoices = list;
     });
@@ -97,10 +98,7 @@ class _State extends State<ClientDetails> {
           SizedBox(
             height: 20,
           ),
-          Text(
-            "Summary",
-            style: Theme.of(context).textTheme.title,
-          ),
+          Text("Summary", style: Theme.of(context).textTheme.headline6),
           SizedBox(
             height: 20,
           ),
@@ -118,13 +116,13 @@ class _State extends State<ClientDetails> {
     return Center(
       child: Text(
         "No invoices",
-        style: Theme.of(context).textTheme.title,
+        style: Theme.of(context).textTheme.headline6,
       ),
     );
   }
 
   Widget _invoiceCard(BuildContext context, int index) {
-    Invoice invoice = invoices[index];
+    InvoiceResponse invoice = invoices[index];
     final formatCurrency = new NumberFormat.simpleCurrency(
       decimalDigits: 0,
       name: "COP",
@@ -142,6 +140,11 @@ class _State extends State<ClientDetails> {
           invoice.amount > 0 ? Icons.arrow_drop_up : Icons.arrow_drop_down,
           color: invoice.amount > 0 ? Colors.green : Colors.red,
           size: 35,
+        ),
+        onTap: () => Navigator.pushNamed(
+          context,
+          EditInvoiceScreen.routeName,
+          arguments: InvoiceArguments(invoice),
         ),
       ),
     );

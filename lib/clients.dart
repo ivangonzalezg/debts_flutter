@@ -98,7 +98,7 @@ class _State extends State<ClientsScreen> {
     return Center(
       child: Text(
         "No clients",
-        style: Theme.of(context).textTheme.title,
+        style: Theme.of(context).textTheme.headline6,
       ),
     );
   }

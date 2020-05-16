@@ -45,10 +45,7 @@ class DatabaseHelper {
       path,
       version: 1,
       onCreate: (Database db, int newerVersion) async {
-        await db.execute(
-            "CREATE TABLE $clientsTable($idColumn INTEGER PRIMARY KEY AUTOINCREMENT, $nameColumn TEXT, $colorColumn TEXT, $createdAtColumn TIMESTAMP DEFAULT CURRENT_TIMESTAMP)");
-        await db.execute(
-            "CREATE TABLE $invoicesTable($idColumn INTEGER PRIMARY KEY AUTOINCREMENT, $clientIdColumn INTEGER, $amountColumn INTEGER, $descriptionColumn TEXT, $createdAtColumn TIMESTAMP DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY($clientIdColumn) REFERENCES $clientsTable($idColumn))");
+        await createTables(db);
       },
       onUpgrade: (Database db, int version, int newVersion) async {
         await db.execute("DROP TABLE IF EXISTS $clientsTable");
@@ -106,10 +103,10 @@ class DatabaseHelper {
   Future<List> getInvoicesByClient(int clientId) async {
     Database database = await db;
     List listMap = await database.rawQuery(
-        "SELECT * FROM $invoicesTable WHERE $clientIdColumn = $clientId");
-    List<Invoice> listInvoices = List();
+        "SELECT $invoicesTable.*, $clientsTable.$idColumn as clientId, $clientsTable.$nameColumn as clientName FROM $invoicesTable INNER JOIN $clientsTable ON $invoicesTable.$clientIdColumn = $clientsTable.$idColumn WHERE $clientIdColumn = $clientId");
+    List<InvoiceResponse> listInvoices = List();
     for (Map m in listMap) {
-      listInvoices.add(Invoice.fromMap(m));
+      listInvoices.add(InvoiceResponse.fromMap(m));
     }
     return listInvoices;
   }
@@ -165,7 +162,7 @@ class DatabaseHelper {
   Future<List> getAllInvoices() async {
     Database database = await db;
     List listMap = await database.rawQuery(
-        "SELECT $invoicesTable.$idColumn, $clientsTable.$idColumn as clientId, $clientsTable.$nameColumn as clientName, $invoicesTable.$amountColumn, $invoicesTable.$descriptionColumn, $invoicesTable.$createdAtColumn FROM $invoicesTable INNER JOIN $clientsTable ON $invoicesTable.$clientIdColumn = $clientsTable.$idColumn");
+        "SELECT $invoicesTable.*, $clientsTable.$idColumn as clientId, $clientsTable.$nameColumn as clientName FROM $invoicesTable INNER JOIN $clientsTable ON $invoicesTable.$clientIdColumn = $clientsTable.$idColumn");
     List<InvoiceResponse> listInvoice = List();
     for (Map m in listMap) {
       listInvoice.add(InvoiceResponse.fromMap(m));

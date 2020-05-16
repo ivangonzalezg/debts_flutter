@@ -137,6 +137,7 @@ class _State extends State<EditInvoiceScreen> {
                   alignLabelWithHint: true,
                 ),
                 keyboardType: TextInputType.multiline,
+                textCapitalization: TextCapitalization.sentences,
               ),
               SizedBox(
                 height: 20,

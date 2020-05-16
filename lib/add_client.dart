@@ -52,7 +52,7 @@ class _State extends State<AddClientScreen> {
                   icon: Icon(Icons.person),
                 ),
                 keyboardType: TextInputType.text,
-                textCapitalization: TextCapitalization.sentences,
+                textCapitalization: TextCapitalization.words,
               ),
               SizedBox(
                 height: 20,
