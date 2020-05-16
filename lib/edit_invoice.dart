@@ -1,3 +1,4 @@
+import 'package:debts/helpers/constants.dart';
 import 'package:debts/helpers/database.dart';
 import 'package:flutter/material.dart';
 
@@ -113,6 +114,7 @@ class _State extends State<EditInvoiceScreen> {
                 isExpanded: true,
                 validator: (value) =>
                     value == null ? 'Please selected a client' : null,
+                decoration: textInputDecoration,
               ),
               SizedBox(
                 height: 20,
@@ -121,7 +123,7 @@ class _State extends State<EditInvoiceScreen> {
                 controller: _amountController,
                 validator: (value) =>
                     value.isEmpty ? 'Please enter an amount' : null,
-                decoration: InputDecoration(
+                decoration: textInputDecoration.copyWith(
                   labelText: "Amount",
                 ),
                 keyboardType: TextInputType.number,
@@ -132,7 +134,7 @@ class _State extends State<EditInvoiceScreen> {
               TextFormField(
                 controller: _descriptionController,
                 maxLines: 5,
-                decoration: InputDecoration(
+                decoration: textInputDecoration.copyWith(
                   labelText: "Description (Opcional)",
                   alignLabelWithHint: true,
                 ),

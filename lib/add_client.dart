@@ -1,3 +1,4 @@
+import 'package:debts/helpers/constants.dart';
 import 'package:debts/helpers/database.dart';
 import 'package:flutter/material.dart';
 
@@ -47,7 +48,7 @@ class _State extends State<AddClientScreen> {
                 controller: _nameController,
                 validator: (value) =>
                     value.isEmpty ? 'Please enter a name' : null,
-                decoration: InputDecoration(
+                decoration: textInputDecoration.copyWith(
                   labelText: "Name",
                   icon: Icon(Icons.person),
                 ),
