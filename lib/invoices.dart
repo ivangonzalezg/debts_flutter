@@ -131,7 +131,7 @@ class _State extends State<InvoicesScreen> {
     }
     return Center(
       child: Text(
-        "No invoices",
+        "No invoice",
         style: Theme.of(context).textTheme.headline6,
       ),
     );

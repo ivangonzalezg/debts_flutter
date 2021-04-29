@@ -44,7 +44,7 @@ class _State extends State<ClientsScreen> {
   Future<Null> _onDelete(int id, String name) async {
     return showDialog(
       context: context,
-      child: AlertDialog(
+      builder: (_) => new AlertDialog(
         title: Text("Are you sure you want to delete $name"),
         actions: <Widget>[
           FlatButton(
